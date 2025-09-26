@@ -134,13 +134,13 @@
 
 <div align="center">
   <a href="https://github.com/SahilAgroha">
-    <img src="https://custom-icon-badges.demolab.com/badge/GitHub-404040.svg?style=for-the-badge&logo=github&logoColor=FFFFFF&labelColor=2C2C2C" alt="GitHub Badge" />
+    <img src="https://custom-icon-badges.demolab.com/badge/GitHub-181717.svg?style=for-the-badge&logo=github&logoColor=FFFFFF&labelColor=181717" alt="GitHub Badge" />
   </a>
   <a href="mailto:sahil.sheoran.agroha@gmail.com">
-    <img src="https://custom-icon-badges.demolab.com/badge/Email%20Me-EA4335.svg?style=for-the-badge&logo=gmail&logoColor=white&labelColor=C5221F" alt="Email Badge" />
+    <img src="https://custom-icon-badges.demolab.com/badge/Email%20Me-D93025.svg?style=for-the-badge&logo=gmail&logoColor=white&labelColor=C5221F" alt="Email Badge" />
   </a>
-  <a href="www.linkedin.com/in/sahilagroha">
-    <img src="https://custom-icon-badges.demolab.com/badge/LinkedIn-0A66C2.svg?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=003D7C" alt="LinkedIn Badge" />
+  <a href="https://linkedin.com/in/sahilagroha">
+    <img src="https://custom-icon-badges.demolab.com/badge/LinkedIn-004B91.svg?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=003D7C" alt="LinkedIn Badge" />
   </a>
 </div>
 
