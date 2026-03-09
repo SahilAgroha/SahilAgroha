@@ -1,49 +1,48 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import "./styles/Landing.css";
 import { profile } from "../data/profileData";
-import { useEffect } from "react";
-
 
 const Landing = ({ children }: PropsWithChildren) => {
+  useEffect(() => {
+    const roles = [profile.subtitleA, profile.subtitleB];
+    const el = document.querySelector(".typing-text") as HTMLElement;
 
-useEffect(() => {
-  const roles = [profile.subtitleA, profile.subtitleB];
-  const el = document.querySelector(".typing-text") as HTMLElement;
+    if (!el) return;
 
-  let roleIndex = 0;
-  let charIndex = 0;
-  let typingForward = true;
+    let roleIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
 
-  const typingSpeed = 100;
-  const deletingSpeed = 80;
-  const holdDelay = 1200;
+    const typingSpeed = 110;
+    const deletingSpeed = 60;
+    const holdAfterTyping = 1400;
 
-  function updateText() {
-    const current = roles[roleIndex];
+    function typeLoop() {
+      const current = roles[roleIndex];
 
-    if (typingForward) {
-      charIndex++;
-      el.textContent = current.slice(0, charIndex);
+      if (!isDeleting) {
+        charIndex++;
+        el.textContent = current.slice(0, charIndex);
 
-      if (charIndex === current.length) {
-        typingForward = false;
-        setTimeout(() => {}, holdDelay);
+        if (charIndex === current.length) {
+          setTimeout(() => (isDeleting = true), holdAfterTyping);
+        }
+      } else {
+        charIndex--;
+        el.textContent = current.slice(0, charIndex);
+
+        if (charIndex === 0) {
+          isDeleting = false;
+          roleIndex = (roleIndex + 1) % roles.length;
+        }
       }
-    } else {
-      charIndex--;
-      el.textContent = current.slice(0, charIndex);
 
-      if (charIndex === 0) {
-        typingForward = true;
-        roleIndex = (roleIndex + 1) % roles.length;
-      }
+      const speed = isDeleting ? deletingSpeed : typingSpeed;
+      setTimeout(typeLoop, speed);
     }
-  }
 
-  const interval = setInterval(updateText, typingSpeed);
-
-  return () => clearInterval(interval);
-}, []);
+    typeLoop();
+  }, []);
 
   return (
     <>
@@ -52,13 +51,14 @@ useEffect(() => {
           <div className="landing-intro">
             <h2>Hello! I'm</h2>
             <h1>
-              {profile.firstName} 
+              {profile.firstName}
               <br />
               <span>{profile.lastName}</span>
             </h1>
           </div>
+
           <div className="landing-info">
-            <h3 >A Full Stack</h3>
+            <h3>A Full Stack</h3>
 
             <h2 className="typing-role">
               <span className="typing-text"></span>
