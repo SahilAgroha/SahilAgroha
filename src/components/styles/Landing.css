@@ -383,8 +383,9 @@ h2.landing-info-h2 {
   }
 
   .landing-info h3 {
-    font-size: 35px;
+    margin-bottom: 22px;   /* space below "A Full Stack" */
   }
+  
 
   .landing-info h2 {
     font-size: 65px;
@@ -395,3 +396,51 @@ h2.landing-info-h2 {
     font-size: 75px;
   }
 }
+.landing-info h3 {
+  margin-bottom: 7px;
+  margin-left: 55px;   /* space below "A Full Stack" */
+}
+/* ===== Typing Animation ===== */
+
+.typing-role {
+  font-size: 56px;
+  font-weight: 700;
+  font-family: "Geist", sans-serif;
+  color: #14b8a6;
+  min-height: 70px;
+  
+}
+
+
+.typing-text::after {
+  content: "|";
+  margin-left: 5px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
+
+
+
+.typing-role {
+  margin-top: 10px;      /* extra spacing */
+  letter-spacing: 2px; 
+  margin-top: 10px; 
+  text-shadow: 10 0 18px rgba(127, 184, 20, 0.35);  /* premium feel */
+}
+
+.typing-text::after {
+  content: "|";
+  margin-left: 5px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
+
+
