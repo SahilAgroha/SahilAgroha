@@ -1,167 +1,194 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Code2 } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight, Github, Linkedin, Mail, MapPin, Briefcase } from 'lucide-react';
+import profileImg from '../assets/profile.png';
+import { personal, roles, heroStats } from '../data/portfolioData';
 
 export default function Hero() {
-  return (
-    <section
-      id="hero"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        minHeight: "100vh",
-        padding: "0 2rem",
-        maxWidth: "1200px",
-        margin: "0 auto"
-      }}
-    >
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        style={{ 
-           width: "100%", 
-           maxWidth: "800px", 
-           background: "rgba(5, 5, 10, 0.7)", 
-           backdropFilter: "blur(16px)", 
-           WebkitBackdropFilter: "blur(16px)",
-           padding: "3rem", 
-           borderRadius: "24px",
-           border: "1px solid rgba(255,255,255,0.08)",
-           boxShadow: "0 20px 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.02)"
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "1.5rem",
-            color: "var(--accent-purple)",
-            marginBottom: "1rem",
-            fontWeight: 500,
-          }}
-        >
-          Hello, I'm
-        </h2>
-        
-        {/* Name with Embedded Logo & Moving Random Gradient Box */}
-        <div style={{ 
-          position: 'relative', display: 'inline-block', marginBottom: '1.5rem', 
-          borderRadius: '24px', overflow: 'hidden', padding: '5px' 
-        }}>
-           
-           {/* Chaotic Random Moving Gradient Line */}
-           <motion.div 
-             animate={{ rotate: 360, scale: [1, 1.8, 0.7, 1.4, 1] }}
-             transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-             style={{
-               position: 'absolute', top: '-50%', left: '-50%', width: '200%', height: '200%',
-               background: 'conic-gradient(from 0deg, transparent 0%, transparent 40%, #00f0ff 50%, #e52e71 60%, transparent 100%)',
-               zIndex: 0,
-             }}
-           />
-
-           {/* Core background to punch out the center, leaving only the glowing border */}
-           <div style={{ 
-             position: 'relative', zIndex: 1, background: '#050505', 
-             borderRadius: '20px', padding: '0.5rem 1.5rem' 
-           }}>
-             <motion.h1
-              animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-              style={{
-                fontSize: "clamp(4rem, 10vw, 7rem)",
-                lineHeight: 1.1,
-                fontWeight: 900,
-                background: "linear-gradient(90deg, #ff8a00, #e52e71, #ff8a00)",
-                backgroundSize: "200% auto",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                display: 'flex',
-                alignItems: 'center',
-                margin: 0
-              }}
-            >
-               S
-              <Code2 
-                size={"clamp(3.5rem, 8vw, 6rem)"} 
-                color="#00f0ff" 
-                strokeWidth={2.5}
-                style={{ margin: '0 8px', filter: 'drop-shadow(0 0 10px rgba(0,240,255,0.7))' }} 
-              />
-              hil 
-            </motion.h1>
-           </div>
-        </div>
-
-        {/* Typewriter Changing Subtitle */}
-        <div style={{ marginBottom: "2rem", minHeight: "3.5rem" }}>
-          <TypewriterText roles={["Software Engineer", "Full Stack Developer"]} />
-        </div>
-
-        <p
-          style={{
-            fontSize: "1.25rem",
-            color: "var(--text-secondary)",
-            maxWidth: "600px",
-            lineHeight: 1.6,
-            marginBottom: "1rem", 
-          }}
-        >
-          I am a passionate Full Stack Developer specializing in building scalable web applications using Spring Boot and React. I love turning ideas into impactful digital products with modern UI/UX.
-        </p>
-
-      </motion.div>
-    </section>
-  );
-}
-
-// Left-Aligned Typewriter Component
-function TypewriterText({ roles }) {
-  const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
-  const [currentText, setCurrentText] = useState('');
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [displayed, setDisplayed] = useState('');
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    if (!roles || roles.length === 0) return;
-    const role = roles[currentRoleIndex];
-    let typingSpeed = isDeleting ? 30 : 100;
+    const role = roles[roleIndex];
+    let speed = deleting ? 28 : 80;
 
-    if (!isDeleting && currentText === role) {
-      typingSpeed = 2500; 
-      setTimeout(() => setIsDeleting(true), typingSpeed);
+    if (!deleting && displayed === role) {
+      const t = setTimeout(() => setDeleting(true), 2200);
+      return () => clearTimeout(t);
+    }
+    if (deleting && displayed === '') {
+      setDeleting(false);
+      setRoleIndex((p) => (p + 1) % roles.length);
       return;
     }
 
-    if (isDeleting && currentText === '') {
-      setIsDeleting(false);
-      setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
-      typingSpeed = 500; 
-      return;
-    }
-
-    const timeout = setTimeout(() => {
-      setCurrentText(
-        isDeleting
-          ? role.substring(0, currentText.length - 1)
-          : role.substring(0, currentText.length + 1)
+    const t = setTimeout(() => {
+      setDisplayed(deleting
+        ? role.slice(0, displayed.length - 1)
+        : role.slice(0, displayed.length + 1)
       );
-    }, typingSpeed);
+    }, speed);
+    return () => clearTimeout(t);
+  }, [displayed, deleting, roleIndex]);
 
-    return () => clearTimeout(timeout);
-  }, [currentText, isDeleting, currentRoleIndex, roles]);
+  const container = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } };
+  const item = { hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } } };
 
   return (
-    <h2 style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)", lineHeight: 1.2, fontWeight: 700, margin: 0, color: "#e0e0e0" }}>
-      I am a <span style={{ color: "var(--accent-cyan)", filter: "drop-shadow(0 0 8px rgba(0,240,255,0.4))" }}>{currentText}</span>
-      <motion.span 
-        animate={{ opacity: [1, 0, 1] }} 
-        transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
-        style={{ 
-          display: 'inline-block', width: '3px', height: '1em', background: 'var(--accent-purple)', 
-          marginLeft: '4px', verticalAlign: 'middle', transform: 'translateY(-2px)' 
-        }}
-      />
-    </h2>
+    <section id="hero" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', padding: '100px 0 5rem' }}>
+      <div className="container">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '4rem', alignItems: 'center' }}>
+
+          {/* ── Left Content ── */}
+          <motion.div variants={container} initial="hidden" animate="show" style={{ maxWidth: 620 }}>
+            <motion.div variants={item} style={{ marginBottom: '1.5rem' }}>
+              <span className="section-label" style={{ gap: '0.4rem' }}>
+                <span style={{
+                  width: 8, height: 8, borderRadius: '50%',
+                  background: '#10b981',
+                  boxShadow: '0 0 0 3px rgba(16,185,129,0.2)',
+                  display: 'inline-block'
+                }} />
+                {personal.availableForWork ? 'Available for opportunities' : 'Currently unavailable'}
+              </span>
+            </motion.div>
+
+            <motion.h1 variants={item} style={{ fontSize: 'clamp(2.8rem, 7vw, 5rem)', fontWeight: 900, marginBottom: '1rem', letterSpacing: '-0.03em' }}>
+              Hi, I'm <span className="gradient-text">{personal.name}</span>
+            </motion.h1>
+
+            <motion.div variants={item} style={{ marginBottom: '1.5rem', minHeight: '2.4rem' }}>
+              <p style={{ fontSize: 'clamp(1.2rem, 2.5vw, 1.55rem)', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                <span style={{ color: 'var(--text-primary)' }}>{displayed}</span>
+                <motion.span
+                  animate={{ opacity: [1, 0, 1] }}
+                  transition={{ duration: 0.8, repeat: Infinity }}
+                  style={{ display: 'inline-block', width: 3, height: '1.1em', background: 'var(--blue)', marginLeft: 4, borderRadius: 2, verticalAlign: 'middle' }}
+                />
+              </p>
+            </motion.div>
+
+            <motion.p variants={item} style={{ color: 'var(--text-secondary)', fontSize: '1.08rem', lineHeight: 1.75, marginBottom: '2rem' }}>
+              {personal.bio}
+            </motion.p>
+
+            <motion.div variants={item} style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
+              {[
+                { icon: <MapPin size={15} />, text: personal.location },
+                { icon: <Briefcase size={15} />, text: personal.tagline },
+              ].map(({ icon, text }) => (
+                <span key={text} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                  {icon} {text}
+                </span>
+              ))}
+            </motion.div>
+
+            <motion.div variants={item} style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
+              <a href="#contact" className="btn btn-primary" style={{ fontSize: '0.95rem' }}>
+                Get In Touch <ArrowRight size={17} />
+              </a>
+              <a href="#projects" className="btn btn-ghost" style={{ fontSize: '0.95rem' }}>
+                View Projects
+              </a>
+            </motion.div>
+
+            <motion.div variants={item} style={{ display: 'flex', gap: '0.75rem' }}>
+              {[
+                { icon: <Github size={19} />, href: personal.github, label: 'GitHub' },
+                { icon: <Linkedin size={19} />, href: personal.linkedin, label: 'LinkedIn' },
+                { icon: <Mail size={19} />, href: `mailto:${personal.email}`, label: 'Email' },
+              ].map(({ icon, href, label }) => (
+                <motion.a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={label}
+                  whileHover={{ y: -3, color: 'var(--blue-light)' }}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    width: 40, height: 40, borderRadius: 10,
+                    background: 'var(--bg-card)', border: '1px solid var(--border)',
+                    color: 'var(--text-secondary)', transition: 'border-color 0.2s ease',
+                  }}
+                >
+                  {icon}
+                </motion.a>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          {/* ── Right: Profile Card ── */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.88, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: 'easeOut' }}
+            style={{ flexShrink: 0 }}
+          >
+            <div style={{ position: 'relative', width: 280 }}>
+              <div style={{
+                position: 'absolute', inset: -20, borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%)',
+                filter: 'blur(20px)', zIndex: 0,
+              }} />
+              <div style={{
+                position: 'relative', zIndex: 1,
+                background: 'var(--bg-card)', border: '1px solid var(--border)',
+                borderRadius: 24, padding: '1.5rem', backdropFilter: 'blur(12px)',
+              }}>
+                <div style={{ width: '100%', aspectRatio: '1 / 1', borderRadius: 16, overflow: 'hidden', background: 'var(--surface)', marginBottom: '1.25rem' }}>
+                  <img src={profileImg} alt={personal.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+                <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+                  <p style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.25rem' }}>{personal.name}</p>
+                  <p style={{ color: 'var(--blue)', fontSize: '0.85rem', fontWeight: 500 }}>{personal.tagline}</p>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem', borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
+                  {heroStats.map(({ val, label }) => (
+                    <div key={label} style={{ textAlign: 'center' }}>
+                      <p style={{ fontWeight: 800, fontSize: '1.15rem', color: 'var(--blue-light)' }}>{val}</p>
+                      <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontWeight: 500 }}>{label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                style={{
+                  position: 'absolute', top: -14, right: -18,
+                  background: 'var(--surface)', border: '1px solid var(--border-accent)',
+                  borderRadius: 12, padding: '0.45rem 0.8rem',
+                  fontSize: '0.8rem', fontWeight: 600, color: 'var(--blue-light)',
+                  boxShadow: 'var(--shadow-blue)', zIndex: 2, whiteSpace: 'nowrap',
+                }}
+              >
+                🚀 Open to work
+              </motion.div>
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                style={{
+                  position: 'absolute', bottom: -14, left: -18,
+                  background: 'var(--surface)', border: '1px solid rgba(245,158,11,0.4)',
+                  borderRadius: 12, padding: '0.45rem 0.8rem',
+                  fontSize: '0.8rem', fontWeight: 600, color: 'var(--amber)',
+                  zIndex: 2, whiteSpace: 'nowrap',
+                }}
+              >
+                💡 Java · React
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+      <style>{`
+        @media (max-width: 900px) {
+          #hero .container > div { grid-template-columns: 1fr !important; }
+          #hero .container > div > div:last-child { display: none; }
+        }
+      `}</style>
+    </section>
   );
 }

@@ -1,108 +1,138 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { Layers } from 'lucide-react';
+import { techCategories } from '../data/portfolioData';
 
-const skills = [
-  { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg' },
-  { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg' },
-  { name: 'HTML5', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg' },
-  { name: 'CSS3', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg' },
-  { name: 'Tailwind CSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg' },
-  { name: 'Three.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/threejs/threejs-original.svg' },
-  { name: 'Java', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg' },
-  { name: 'Spring Boot', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg' },
-  { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg' },
-  { name: 'Redis', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg' },
-  { name: 'Docker', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg' },
-  { name: 'Kafka', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apachekafka/apachekafka-original.svg' }
-];
+// Flatten all skills into one pool
+const allSkills = techCategories.flatMap(cat => cat.skills);
+
+// Deterministic float config per skill so it never changes on re-render
+const floatConfigs = allSkills.map((_, i) => ({
+  yAmp: 10 + (i * 7) % 14,
+  xAmp: 4 + (i * 5) % 10,
+  duration: 3.2 + (i * 0.4) % 2.4,
+  xDuration: 4 + (i * 0.6) % 3,
+  delay: (i * 0.35) % 2.5,
+  rotate: 360,
+  rotateDuration: 2.5 + (i * 0.3) % 2, // spinning gradient speed
+}));
 
 export default function TechStack() {
   return (
-    <section id="tech-stack" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-      
-      <motion.div 
-        initial={{ y: 50, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
-        style={{ width: '100%' }}
-      >
-        <h2 style={{ fontSize: '3rem', marginBottom: '3rem', fontWeight: 800, textAlign: 'center' }}>
-          <span style={{ 
-            background: 'linear-gradient(45deg, #00f2fe, #4facfe)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'
-          }}>Tech Stack</span>
-        </h2>
-      </motion.div>
-      
-      <div style={{ 
-        display: 'flex', 
-        flexWrap: 'wrap', 
-        justifyContent: 'center', 
-        alignItems: 'center',
-        gap: '2.5rem', 
-        maxWidth: '1000px', 
-        margin: '0 auto',
-        padding: '2rem 1rem'
-      }}>
-        {skills.map((skill, index) => {
-          // Generate a smooth organic float offset for the "freely flow" effect
-          const duration = 3 + Math.random() * 2;
-          const delay = Math.random() * 2;
-          const yFloat = Math.random() * 8 + 5;
-          const xFloat = (Math.random() - 0.5) * 8;
+    <section id="tech-stack">
+      <div className="container">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="section-label"><Layers size={13} /> Tech Stack</span>
+          <h2 className="section-heading">Tools I <span className="gradient-text">Work With</span></h2>
+          <p className="section-sub">Technologies I use to build reliable, scalable, and beautiful software.</p>
+        </motion.div>
 
-          return (
-            <motion.div 
-              key={index}
-              initial={{ opacity: 0, scale: 0 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              animate={{ 
-                y: [0, -yFloat, 0],
-                x: [0, xFloat, 0]
-              }}
-              transition={{ 
-                opacity: { duration: 0.5, delay: index * 0.1 },
-                scale: { type: 'spring', damping: 10, stiffness: 100, delay: index * 0.1 },
-                y: { duration: duration, repeat: Infinity, ease: 'easeInOut', delay: delay },
-                x: { duration: duration * 1.2, repeat: Infinity, ease: 'easeInOut', delay: delay }
-              }}
-              whileHover={{ scale: 1.1, zIndex: 10 }}
-              style={{ 
-                position: 'relative',
-                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                width: '140px', height: '140px', borderRadius: '50%', // Explicit perfect circle shape
-                cursor: 'pointer',
-                boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
-                overflow: 'hidden'
-              }}
-            >
-              {/* Spinning gradient background layer creating the "moving circle contour line" */}
-              <motion.div 
-                animate={{ rotate: 360 }}
-                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                style={{
-                  position: 'absolute', top: '-50%', left: '-50%', width: '200%', height: '200%',
-                  background: 'conic-gradient(from 0deg, transparent 0%, transparent 60%, #00f0ff 80%, #9d4edd 100%)',
-                  zIndex: 0,
+        {/* Floating skill orbs */}
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '2rem',
+          padding: '1rem 0 2rem',
+        }}>
+          {allSkills.map((skill, i) => {
+            const cfg = floatConfigs[i];
+            return (
+              <motion.div
+                key={skill.name}
+                initial={{ opacity: 0, scale: 0.4 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ type: 'spring', stiffness: 120, damping: 14, delay: i * 0.06 }}
+                animate={{
+                  y: [0, -cfg.yAmp, 0],
+                  x: [0, cfg.xAmp, 0],
                 }}
-              />
-              
-              {/* Inner dark container leaving ONLY a strictly 2px animated circular border exposed */}
-              <div style={{
-                position: 'absolute', inset: '2px', background: 'rgba(15, 15, 20, 0.95)', borderRadius: '50%', zIndex: 1
-              }} />
-
-              {/* Foreground content strictly constrained to zIndex 2 */}
-              <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                <img src={skill.icon} alt={skill.name} style={{ width: '45px', height: '45px', filter: 'drop-shadow(0 0 10px rgba(0, 240, 255, 0.3))' }} />
-                <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#e0e0e0', letterSpacing: '0.5px', textAlign: 'center' }}>{skill.name}</span>
-              </div>
-            </motion.div>
-          );
-        })}
+                // Keep float independent of whileInView by using separate transition for animate
+                style={{ willChange: 'transform' }}
+              >
+                {/* Override animate transition separately */}
+                <FloatingSkill skill={skill} cfg={cfg} />
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
-
     </section>
+  );
+}
+
+function FloatingSkill({ skill, cfg }) {
+  return (
+    <motion.div
+      animate={{
+        y: [0, -cfg.yAmp, 0],
+        x: [0, cfg.xAmp, 0],
+      }}
+      transition={{
+        y: { duration: cfg.duration, repeat: Infinity, ease: 'easeInOut', delay: cfg.delay },
+        x: { duration: cfg.xDuration, repeat: Infinity, ease: 'easeInOut', delay: cfg.delay + 0.5 },
+      }}
+      whileHover={{ scale: 1.12, zIndex: 10 }}
+      style={{
+        position: 'relative',
+        width: 120,
+        height: 120,
+        borderRadius: '50%',
+        cursor: 'default',
+        flexShrink: 0,
+      }}
+    >
+      {/* ── Spinning conic-gradient border ── */}
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: cfg.rotateDuration, repeat: Infinity, ease: 'linear' }}
+        style={{
+          position: 'absolute',
+          inset: -2,
+          borderRadius: '50%',
+          background: 'conic-gradient(from 0deg, transparent 0%, transparent 55%, #3b82f6 75%, #f59e0b 88%, transparent 100%)',
+          zIndex: 0,
+        }}
+      />
+
+      {/* ── Inner dark fill ── */}
+      <div style={{
+        position: 'absolute',
+        inset: 3,
+        borderRadius: '50%',
+        background: 'radial-gradient(circle at 35% 35%, #111c38, #060d1f)',
+        zIndex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '0.4rem',
+      }}>
+        <img
+          src={skill.icon}
+          alt={skill.name}
+          style={{ width: 36, height: 36, objectFit: 'contain', filter: 'drop-shadow(0 0 6px rgba(59,130,246,0.4))' }}
+          onError={e => { e.target.style.display = 'none'; }}
+        />
+        <span style={{
+          fontSize: '0.72rem',
+          fontWeight: 700,
+          color: '#c8d8f0',
+          letterSpacing: '0.02em',
+          textAlign: 'center',
+          lineHeight: 1.1,
+          padding: '0 4px',
+        }}>
+          {skill.name}
+        </span>
+      </div>
+    </motion.div>
   );
 }
