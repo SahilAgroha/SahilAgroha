@@ -2,8 +2,8 @@
 
 :root {
   --bg: #060d1f;
-  --bg-card: rgba(255, 255, 255, 0.04);
-  --bg-card-hover: rgba(255, 255, 255, 0.07);
+  --bg-card: rgba(6, 13, 31, 0.65);
+  --bg-card-hover: rgba(6, 13, 31, 0.85);
   --surface: #0e1830;
   --border: rgba(255, 255, 255, 0.08);
   --border-accent: rgba(59, 130, 246, 0.4);
@@ -109,8 +109,8 @@ img { display: block; }
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.75rem;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
