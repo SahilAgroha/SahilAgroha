@@ -160,7 +160,7 @@ export const timeline = [
   },
   {
   type: 'education',
-  period: '2021 — 2025',
+  period: '2023 — 2027',
   title: 'Bachelor of Technology (B.Tech) in Information Technology',
   org: 'Indian Institute of Information Technology, Bhopal',
   location: 'Bhopal, Madhya Pradesh',
