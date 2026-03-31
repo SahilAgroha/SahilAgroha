@@ -55,7 +55,8 @@ export default function Hero() {
             </motion.div>
 
             <motion.h1 variants={item} style={{ fontSize: 'clamp(2.8rem, 7vw, 5rem)', fontWeight: 900, marginBottom: '1rem', letterSpacing: '-0.03em' }}>
-              Hi, I'm <span className="gradient-text">{personal.name}</span>
+              Hi, I'm <span className="gradient-text" style={{ display: 'block',marginTop: '0.5rem',
+      fontSize: '0.5em' }}>{personal.name}</span>
             </motion.h1>
 
             <motion.div variants={item} style={{ marginBottom: '1.5rem', minHeight: '2.4rem' }}>

@@ -36,7 +36,7 @@ export const heroStats = [
 
 // ── 4. About ─────────────────────────────────────────────────────────────────
 export const aboutStats = [
-  { value: '3+', label: 'Projects Shipped' },
+  { value: '3+', label: 'Projects Created' },
   { value: '12+', label: 'Technologies' },
   { value: '1+', label: 'Year Coding' },
   { value: '100%', label: 'Commitment' },
